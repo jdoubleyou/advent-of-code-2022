@@ -1,0 +1,19 @@
+# [tool.pytest.ini_options]
+# pythonpath = ["src"]
+# minversion = "7.0"
+# addopts = ". -vvvv -rxXs -s --cov=src --cov-report=html:__coverage__"
+# console_output_style = "count"
+# testpaths = ["test"]
+# log_file = "__logs__/pytest-logs.log"
+# log_file_level = "DEBUG"
+# log_format = "%(asctime)s %(levelname)s %(message)s"
+# log_date_format = "%Y-%m-%d %H:%M:%S"
+# cache_dir = "__pytestcache__"
+# python_functions = "TEST__*"
+
+[tool.black]
+extend-exclude = "^/venv"
+
+[tool.isort]
+profile = "black"
+force_single_line = true
