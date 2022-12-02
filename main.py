@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     prompt = "..."
     if args.prompt:
-        with open(base_dir / "prompt.txt", "r") as f:
+        with open(base_dir / f"prompt_{'1' if not is_part_two else '2'}.txt", "r") as f:
             prompt = f.read()
 
     with open(input_file, "r") as f:
