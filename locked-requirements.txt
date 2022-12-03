@@ -5,6 +5,7 @@ black==22.10.0
   platformdirs==2.5.4
   tomli==2.0.1
   typing_extensions==4.4.0
+colorama==0.4.6
 isort==5.10.1
 pre-commit==2.20.0
   cfgv==3.3.1
