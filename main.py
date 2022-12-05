@@ -1,10 +1,73 @@
 import argparse
 import sys
+from dataclasses import dataclass
 from importlib import import_module
+from io import TextIOWrapper
 from pathlib import Path
 from textwrap import indent
+from typing import Any
+from typing import Callable
 
 import colorama
+
+from utils import *
+
+list = BetterList
+str = BetterStr
+
+
+class InvalidExpectationError(Exception):
+    pass
+
+
+class UnreadContents:
+    pass
+
+
+class ExpectationUnset:
+    pass
+
+
+@dataclass(init=False)
+class TestCase:
+    module: str
+    func: str
+    input_file: str
+    expected: str
+
+    def __init__(
+        self,
+        module: str,
+        func: str,
+        input_file: str,
+        expected: str,
+    ) -> None:
+        self.module = import_module(module)
+        self.func = getattr(self.module, func)
+        self.input_file: TextIOWrapper = open(
+            (Path.cwd() / module / input_file).absolute(), "r"
+        )
+        self.expected = expected if expected != "-" else None
+        self.contents = UnreadContents()
+
+    @classmethod
+    def to(cls, args):
+        try:
+            return cls(*args)
+        except ModuleNotFoundError:
+            return None
+
+    def result(self) -> tuple[Any, bool]:
+        self.contents = self.input_file.read()
+        res = self.func(self.contents, BetterList(self.contents.splitlines()))
+        if self.expected is None:
+            return res, False
+        return res, self.expected == res
+
+    def close(self):
+        if not self.input_file.closed:
+            self.input_file.close()
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -13,6 +76,12 @@ if __name__ == "__main__":
     parser.add_argument("--prompt", action="store_true")
     parser.add_argument("--test", action="store_true")
     args = parser.parse_args()
+
+    split: Callable[
+        [str], Callable[[str], BetterList]
+    ] = lambda delimiter: lambda s: BetterList(s.split(delimiter))
+    strip = lambda s: s.strip()
+    non_comments = lambda line: not line.startswith("#")
 
     part = args.part - 1
     formatted_part = "One" if not args.part else "Two"
@@ -23,72 +92,95 @@ if __name__ == "__main__":
     funcs = ["part_one", "part_two"]
     part_func_name = funcs[part]
 
-    if not base_dir.is_dir():
-        raise FileNotFoundError(
-            f"'{module_name}' does not exist or is not a directory."
-        )
-
-    module = import_module(module_name)
-    func = getattr(module, funcs[part])
-
-    if args.test:
-        test_module_name = "test"
-        if not (base_dir / f"{test_module_name}.py").exists():
+    try:
+        if not base_dir.is_dir():
             raise FileNotFoundError(
-                f"'{module_name}' does not have a '{test_module_name}.py' file"
+                f"'{module_name}' does not exist or is not a directory."
             )
-        test_module = import_module(f"{module_name}.{test_module_name}")
-        failures = []
-        test_cases = getattr(test_module, "test_cases")
-        for answers, input_text in test_cases.items():
-            result = func(input_text)
-            failure_message = f"""\
-Expected: {colorama.Fore.GREEN}{answers[part]}{colorama.Fore.RESET}
-Given:    {colorama.Fore.RED}{result}{colorama.Fore.RESET}
+
+        module = import_module(module_name)
+        func = getattr(module, funcs[part])
+
+        if args.test:
+            to_failure_message = (
+                lambda triple: f"""\
+Expected: {colorama.Fore.GREEN}{triple[0].expected}{colorama.Fore.RESET}
+Given:    {colorama.Fore.RED}{triple[1]}{colorama.Fore.RESET}
 Input:
 {'-' * 32}
-{indent(input_text, "|> ")}{'-' * 32}
-"""
-            if answers[part] != result:
-                failures.append(failure_message)
-        if len(failures):
-            failures = [
-                f"*** {colorama.Fore.MAGENTA}{index+1}/{len(failures)} failed test cases{colorama.Fore.RESET} ***\n{msg}"
-                for index, msg in enumerate(failures)
-            ]
-            totals_row = f"\n{colorama.Back.LIGHTRED_EX}{len(failures)} test case{'s' if (len(failures)-1) else ''} failed out of {len(test_cases)} total.{colorama.Back.RESET}\n"
-            print(
-                ("+" * 64)
-                + totals_row
-                + "\n"
-                + indent("\n".join(failures), " " * 4)
-                + totals_row
-                + ("+" * 64),
-                file=sys.stderr,
+{indent(triple[0].contents, "|> ", predicate=lambda s: True)}
+{'-' * 32}
+    """
             )
-            exit(-1)
-        print(
-            colorama.Fore.LIGHTGREEN_EX
-            + "*** All Tests successful ***"
-            + colorama.Fore.RESET
-        )
-    else:
-        input_file = base_dir / "input.txt"
+            current_day = (
+                lambda test_case: test_case and test_case.module.__name__ == module_name
+            )
+            print_err = lambda s: print(s, file=sys.stderr)
+            buffer = "+" * 64
+            color_failure = (
+                lambda s: colorama.Back.LIGHTRED_EX + s + colorama.Back.RESET
+            )
+            color_success = (
+                lambda s: colorama.Fore.LIGHTGREEN_EX + s + colorama.Fore.RESET
+            )
+            failures = list()
+            with open("tests", "r") as tests_file:
+                total_count = IntWrapper(0)
+                failure_count = IntWrapper(0)
+                to_case_fail_text = (
+                    lambda enumerated: f"*** {colorama.Fore.MAGENTA}{enumerated[0]+1}/{failure_count.get()} failed test cases{colorama.Fore.RESET} ***\n{enumerated[1]}"
+                )
+                successes, failures = (
+                    failures.concat(tests_file.readlines())
+                    .filter_to(non_comments)
+                    .split_each_on("|")
+                    .map(lambda strings: strings.map(strip))
+                    .map(TestCase.to)
+                    .filter_to(current_day)
+                    .foreach(total_count.increment)
+                    .map(lambda test_case: (test_case,) + test_case.result())
+                    .divide(lambda triple: bool(triple[2]))
+                )
+                # successes.map(to_success_message)
+                failures = (
+                    failures.foreach(failure_count.increment)
+                    .map(to_failure_message)
+                    .enumerate()
+                    .map(to_case_fail_text)
+                )
 
-        if not input_file.exists():
-            raise FileNotFoundError(f"'{input_file}' does not exist.")
+            if len(failures):
+                failures = failures.join("\n").indent(" " * 4)
+                totals_row = (
+                    f"\n"
+                    + color_failure(
+                        f"{failure_count} test case{'s' if (failure_count-1) else ''} failed out of {total_count} total test cases run."
+                    )
+                    + "\n"
+                )
+                print(
+                    buffer + totals_row + "\n" + failures + totals_row + buffer,
+                    file=sys.stderr,
+                )
+                exit(-1)
+            print(color_success("*** All Tests successful ***"))
+        else:
+            input_file = base_dir / "input.txt"
 
-        prompt = "..."
-        if args.prompt:
-            with open(prompt_file_name, "r") as f:
-                prompt = f.read()
+            if not input_file.exists():
+                raise FileNotFoundError(f"'{input_file}' does not exist.")
 
-        with open(input_file, "r") as f:
-            puzzle_input = f.read()
+            prompt = "..."
+            if args.prompt:
+                with open(prompt_file_name, "r") as f:
+                    prompt = f.read()
 
-        puzzle_output = func(puzzle_input)
-        print(
-            f"""\
+            with open(input_file, "r") as f:
+                puzzle_input: str = f.read()
+
+            puzzle_output = func(puzzle_input, BetterList(puzzle_input.splitlines()))
+            print(
+                f"""\
 Advent Of Code 2022!
 
 +++++++++++++++++++++++++
@@ -106,4 +198,7 @@ Output:
 {puzzle_output}
 -------------------------
 """
-        )
+            )
+    except Exception as e:
+        # print("ERROR:\n++++++\n" + str(e) + "\n++++++")
+        raise e

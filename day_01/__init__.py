@@ -1,4 +1,7 @@
-def part_one(puzzle_input: str):
+from utils import *
+
+
+def part_one(puzzle_input: str, puzzle_input_lines: list[str]):
     return max(
         [
             sum([int(e) for e in elf.split()])
@@ -7,7 +10,7 @@ def part_one(puzzle_input: str):
     )
 
 
-def part_two(puzzle_input: str):
+def part_two(puzzle_input: str, puzzle_input_lines: list[str]):
     return sum(
         list(
             reversed(

@@ -1,0 +1,83 @@
+#   module  |   func         |   input_file          |   expected_answer
+#-----------|----------------|-----------------------|--------------------
+    day_01  |   part_one     |   example.txt         |   24000
+    day_01  |   part_two     |   example.txt         |   45000
+#-----------|----------------|-----------------------|--------------------
+    day_02  |   part_one     |   example.txt         |   15
+    day_02  |   part_two     |   example.txt         |   12
+#-----------|----------------|-----------------------|--------------------
+    day_03  |   part_one     |   example1.txt        |   157
+    day_03  |   part_two     |   example1.txt        |   70
+    day_03  |   part_one     |   example2.txt        |   96
+    day_03  |   part_two     |   example2.txt        |   18
+#-----------|----------------|-----------------------|--------------------
+    day_04  |   part_one     |   example.txt         |   2
+    day_04  |   part_two     |   example.txt         |   4
+    day_04  |   part_one     |   input.txt           |   567
+    day_04  |   part_two     |   input.txt           |   907
+#-----------|----------------|-----------------------|--------------------
+    day_05  |   part_one     |   example.txt         |   CMZ
+    # day_05  |   part_two     |   example.txt         |   -
+    day_05  |   part_one     |   input.txt           |   CMZ
+    # day_05  |   part_two     |   input.txt           |   -
+#-----------|----------------|-----------------------|--------------------
+    day_06  |   part_one     |   example.txt         |   -
+    day_06  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_07  |   part_one     |   example.txt         |   -
+    day_07  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_08  |   part_one     |   example.txt         |   -
+    day_08  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_09  |   part_one     |   example.txt         |   -
+    day_09  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_10  |   part_one     |   example.txt         |   -
+    day_10  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_11  |   part_one     |   example.txt         |   -
+    day_11  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_12  |   part_one     |   example.txt         |   -
+    day_12  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_13  |   part_one     |   example.txt         |   -
+    day_13  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_14  |   part_one     |   example.txt         |   -
+    day_14  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_15  |   part_one     |   example.txt         |   -
+    day_15  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_16  |   part_one     |   example.txt         |   -
+    day_16  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_17  |   part_one     |   example.txt         |   -
+    day_17  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_18  |   part_one     |   example.txt         |   -
+    day_18  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_19  |   part_one     |   example.txt         |   -
+    day_19  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_20  |   part_one     |   example.txt         |   -
+    day_20  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_21  |   part_one     |   example.txt         |   -
+    day_21  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_22  |   part_one     |   example.txt         |   -
+    day_22  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_23  |   part_one     |   example.txt         |   -
+    day_23  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_24  |   part_one     |   example.txt         |   -
+    day_24  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------
+    day_25  |   part_one     |   example.txt         |   -
+    day_25  |   part_two     |   example.txt         |   -
+#-----------|----------------|-----------------------|--------------------

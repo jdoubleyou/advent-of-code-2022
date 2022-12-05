@@ -1,7 +1,9 @@
 from string import ascii_letters
 
+from utils import *
 
-def part_one(puzzle_input: str):
+
+def part_one(puzzle_input: str, puzzle_input_lines: list[str]):
     rucksacks = puzzle_input.strip().split("\n")
 
     shared_values = []
@@ -14,7 +16,7 @@ def part_one(puzzle_input: str):
     return sum(shared_values)
 
 
-def part_two(puzzle_input: str):
+def part_two(puzzle_input: str, puzzle_input_lines: list[str]):
     rucksacks = puzzle_input.strip().split("\n")
 
     shared_values = []

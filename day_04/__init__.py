@@ -1,4 +1,7 @@
-def part_one(puzzle_input: str):
+from utils import *
+
+
+def part_one(puzzle_input: str, puzzle_input_lines: list[str]):
     pairs = puzzle_input.strip().split("\n")
     return sum(
         [
@@ -16,7 +19,7 @@ def part_one(puzzle_input: str):
     )
 
 
-def part_two(puzzle_input: str):  # 907
+def part_two(puzzle_input: str, puzzle_input_lines: list[str]):  # 907
     pairs = puzzle_input.strip().split("\n")
     return sum(
         [

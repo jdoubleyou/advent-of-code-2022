@@ -1,3 +1,5 @@
+from utils import *
+
 rock = "A"
 paper = "B"
 scissors = "C"
@@ -47,7 +49,7 @@ find_hand = {
 }
 
 
-def part_one(puzzle_input: str):
+def part_one(puzzle_input: str, puzzle_input_lines: list[str]):
     hands = puzzle_input.strip().split("\n")
     hands = [tuple(hand.split()) for hand in hands]
     hands = [(opp + conversions[you], conversions[you]) for opp, you in hands]
@@ -55,7 +57,7 @@ def part_one(puzzle_input: str):
     return sum(hands)
 
 
-def part_two(puzzle_input: str):
+def part_two(puzzle_input: str, puzzle_input_lines: list[str]):
     hands = puzzle_input.strip().split("\n")
     hands = [tuple(hand.split()) for hand in hands]
     hands = [(opp + find_hand[you](opp), find_hand[you](opp)) for opp, you in hands]
