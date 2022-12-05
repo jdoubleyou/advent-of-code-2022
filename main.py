@@ -74,6 +74,7 @@ if __name__ == "__main__":
     parser.add_argument("day", type=int, choices=tuple(range(1, 26)))
     parser.add_argument("part", type=int, choices=(1, 2))
     parser.add_argument("--prompt", action="store_true")
+    parser.add_argument("--print_input", action="store_true")
     parser.add_argument("--test", action="store_true")
     args = parser.parse_args()
 
@@ -108,7 +109,7 @@ Expected: {colorama.Fore.GREEN}{triple[0].expected}{colorama.Fore.RESET}
 Given:    {colorama.Fore.RED}{triple[1]}{colorama.Fore.RESET}
 Input:
 {'-' * 32}
-{indent(triple[0].contents, "|> ", predicate=lambda s: True)}
+{indent(triple[0].contents, "|> ", predicate=lambda s: True) if args.print_input else '...'}
 {'-' * 32}
     """
             )
