@@ -17,9 +17,9 @@
     day_04  |   part_two     |   input.txt           |   907
 #-----------|----------------|-----------------------|--------------------
     day_05  |   part_one     |   example.txt         |   CMZ
-    # day_05  |   part_two     |   example.txt         |   -
-    day_05  |   part_one     |   input.txt           |   CMZ
-    # day_05  |   part_two     |   input.txt           |   -
+    day_05  |   part_two     |   example.txt         |   MCD
+    day_05  |   part_one     |   input.txt           |   VWLCWGSDQ
+    day_05  |   part_two     |   input.txt           |   TCGLQSLPW
 #-----------|----------------|-----------------------|--------------------
     day_06  |   part_one     |   example.txt         |   -
     day_06  |   part_two     |   example.txt         |   -
