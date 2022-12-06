@@ -1,6 +1,8 @@
 import logging
 from pathlib import Path
 
+import pytest
+
 
 def run_test(details):
     base_dir = Path.cwd()
@@ -9,6 +11,8 @@ def run_test(details):
             logging.debug(f"reading {base_dir / file}")
             contents = f.read()
             logging.debug(f"contents ({base_dir / file}): " + contents)
+            if not cases:
+                pytest.skip("No test cases to run.")
             for func, expected in cases.items():
                 assert expected == func(contents)
 

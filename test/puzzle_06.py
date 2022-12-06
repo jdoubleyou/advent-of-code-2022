@@ -8,8 +8,8 @@ def test_puzzle_06():
     run_test(
         {
             "inputs/day_06/example.txt": {
-                day_06.part_one: None,
-                day_06.part_two: None,
+                # day_06.part_one: None,
+                # day_06.part_two: None,
             },
         }
     )
