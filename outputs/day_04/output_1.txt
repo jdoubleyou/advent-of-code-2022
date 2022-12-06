@@ -1,0 +1,1 @@
+RESULT (part_one): 567

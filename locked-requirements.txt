@@ -17,3 +17,11 @@ pre-commit==2.20.0
     distlib==0.3.6
     filelock==3.8.0
     platformdirs==2.5.4
+pytest==7.2.0
+  attrs==22.1.0
+  exceptiongroup==1.0.4
+  iniconfig==1.1.1
+  packaging==21.3
+    pyparsing==3.0.9
+  pluggy==1.0.0
+  tomli==2.0.1
