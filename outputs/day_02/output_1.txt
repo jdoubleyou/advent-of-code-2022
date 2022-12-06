@@ -1,1 +1,0 @@
-RESULT (part_one): 12458
