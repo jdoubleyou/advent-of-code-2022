@@ -11,13 +11,25 @@ def test_puzzle_08():
                 # day_08.part_one: None,
                 # day_08.part_two: None,
             },
+            # "inputs/day_08/example2.txt": {
+            #     # day_08.part_one: None,
+            #     # day_08.part_two: None,
+            # },
+            # "inputs/day_08/example3.txt": {
+            #     # day_08.part_one: None,
+            #     # day_08.part_two: None,
+            # },
+            # "inputs/day_08/example4.txt": {
+            #     # day_08.part_one: None,
+            #     # day_08.part_two: None,
+            # },
         }
     )
     run_real(
         {
             "inputs/day_08/input.txt": {
-                # day_08.part_one: "outputs/day_06/output_1.txt",
-                # day_08.part_two: "outputs/day_06/output_2.txt",
+                # day_08.part_one: "outputs/day_08/output_1.txt",
+                # day_08.part_two: "outputs/day_08/output_2.txt",
             }
         }
     )
