@@ -51,15 +51,13 @@ How many characters need to be processed before the first start-of-message marke
 """
 
 
+from .utils import windowed
+
+
 def find_window(puzzle_input: str, window_len: int):
-    window = (0, window_len)
-    puzzle_input = puzzle_input.strip()
-    while (
-        window[0] <= len(puzzle_input)
-        and len(set(puzzle_input[window[0] : window[1]])) != window_len
-    ):
-        window = (window[0] + 1, window[1] + 1)
-    return window[1]
+    for iteration, window in enumerate(windowed(puzzle_input, window_len)):
+        if len(set(window)) == window_len:
+            return iteration + window_len
 
 
 def part_one(puzzle_input: str):
