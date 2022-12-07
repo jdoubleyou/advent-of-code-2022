@@ -118,23 +118,18 @@ def get_size(
     for name, value in sizes.items():
         full_name = parent_name + "/" + name
         if type(value) == dict:
-            # print(f"looking into {name=}")
             dir_size = get_size(full_name, value, big_dirs, all_dirs, predicate)
             total += dir_size
             all_dirs.append((full_name, dir_size))
             if predicate(dir_size):
                 big_dirs.append((full_name, dir_size))
-            else:
-                # print(f"skipping {full_name=} of {dir_size=}")
-                pass
         elif type(value) == int:
             logs.append(f"{full_name}={value}")
             total += value
-    # print("\n".join(sorted([f"{parent_name}={total}"] + logs)))
     return total
 
 
-def do(puzzle_input: str):
+def make_directory_tree(puzzle_input: str):
     dir_stack = []
     dir_sizes = {}
     lines = [line.strip() for line in puzzle_input.strip().splitlines()]
@@ -166,22 +161,32 @@ def do(puzzle_input: str):
                 for s in dir_stack:
                     curr = curr[s]
                 curr[file_name] = size
+    return dir_sizes
 
+
+def get_stats(puzzle_input: str):
+    dir_sizes = make_directory_tree(puzzle_input)
+
+    # what is this, C?
     big_dirs = []
     all_dirs = []
     total = get_size(
-        "", dir_sizes["/"], big_dirs, all_dirs, lambda value: 0 < value <= 100000
+        "",
+        dir_sizes["/"],
+        big_dirs,
+        all_dirs,
+        lambda value: 0 < value <= 100000,
     )
     return (total, big_dirs, all_dirs)
 
 
 def part_one(puzzle_input: str):
-    _, big_dirs, _ = do(puzzle_input)
+    _, big_dirs, _ = get_stats(puzzle_input)
     return sum([p[1] for p in big_dirs])
 
 
 def part_two(puzzle_input: str):
-    total, _, all_dirs = do(puzzle_input)
+    total, _, all_dirs = get_stats(puzzle_input)
     free_space = 70000000 - total
     needed_space = (
         30000000 - free_space
