@@ -1,4 +1,5 @@
 import logging
+import typing as t
 from pathlib import Path
 
 import pytest
@@ -17,7 +18,7 @@ def run_test(details):
                 assert expected == func(contents)
 
 
-def run_real(details):
+def run_real(details: dict[str, dict[t.Callable[[str], t.Any], str]]):
     base_dir = Path.cwd()
     for in_file, cases in details.items():
         with open(base_dir / in_file, "r") as f:
@@ -25,6 +26,9 @@ def run_real(details):
             contents = f.read()
             logging.debug(f"contents ({base_dir / in_file}): " + contents)
             for func, out_file in cases.items():
+                p = base_dir / out_file
+                if not p.parent.exists():
+                    p.parent.mkdir()
                 with open(base_dir / out_file, "w") as out:
                     logging.debug(f"writing {base_dir / out_file}")
                     result = str(func(contents))
