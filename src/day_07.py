@@ -114,7 +114,6 @@ def get_size(
     predicate: Callable[[int], bool],
 ):
     total = 0
-    logs = []
     for name, value in sizes.items():
         full_name = parent_name + "/" + name
         if type(value) == dict:
@@ -124,7 +123,6 @@ def get_size(
             if predicate(dir_size):
                 big_dirs.append((full_name, dir_size))
         elif type(value) == int:
-            logs.append(f"{full_name}={value}")
             total += value
     return total
 
@@ -134,7 +132,6 @@ def make_directory_tree(puzzle_input: str):
     dir_sizes = {}
     lines = [line.strip() for line in puzzle_input.strip().splitlines()]
     for line in lines:
-        # print(f"{dir_stack=} -> {dir_sizes=}")
         if line.startswith("$ "):
             cmd = line.replace("$ ", "")
             if cmd.startswith("cd "):
