@@ -8,13 +8,13 @@ def test_puzzle_08():
     run_test(
         {
             "inputs/day_08/example.txt": {
-                day_08.part_one: None,
-                day_08.part_two: None,
+                day_08.part_one: 21,
+                day_08.part_two: 8,
             },
-            # "inputs/day_08/example2.txt": {
-            #     # day_08.part_one: None,
-            #     # day_08.part_two: None,
-            # },
+            "inputs/day_08/input.txt": {
+                day_08.part_one: 1796,
+                day_08.part_two: 288120,
+            },
             # "inputs/day_08/example3.txt": {
             #     # day_08.part_one: None,
             #     # day_08.part_two: None,
