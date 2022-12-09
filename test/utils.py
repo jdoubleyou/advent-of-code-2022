@@ -5,32 +5,40 @@ from pathlib import Path
 import pytest
 
 
-def run_test(details):
+def verify(mod, test: dict[str, dict[t.Callable[[str], t.Any], str]], real: list[str]):
+    mod_name = mod.__name__.split(".")[-1]
     base_dir = Path.cwd()
-    for file, cases in details.items():
-        with open(base_dir / file, "r") as f:
-            logging.debug(f"reading {base_dir / file}")
+    for test_file, test_cases in test.items():
+        prefixed_test_file = f"inputs/{mod_name}/{test_file}"
+        with open(base_dir / prefixed_test_file, "r") as f:
+            logging.debug(f"reading {base_dir / prefixed_test_file}")
             contents = f.read()
-            logging.debug(f"contents ({base_dir / file}): " + contents)
-            if not cases:
+            logging.debug(f"contents ({base_dir / prefixed_test_file}): " + contents)
+            if not test_cases or test_cases == (None, None):
                 pytest.skip("No test cases to run.")
-            for func, expected in cases.items():
-                assert expected == func(contents)
 
+            expected_part_one, expected_part_two = test_cases
+            assert expected_part_one == getattr(mod, "part_one")(contents)
+            assert expected_part_two == getattr(mod, "part_two")(contents)
 
-def run_real(details: dict[str, dict[t.Callable[[str], t.Any], str]]):
-    base_dir = Path.cwd()
-    for in_file, cases in details.items():
-        with open(base_dir / in_file, "r") as f:
-            logging.debug(f"reading {base_dir / in_file}")
+    if not real:
+        pytest.skip("No real input files to run.")
+
+    for real_file in real:
+        prefixed_real_file = f"inputs/{mod_name}/{real_file}"
+        with open(base_dir / prefixed_real_file, "r") as f:
+            logging.debug(f"reading {base_dir / prefixed_real_file}")
             contents = f.read()
-            logging.debug(f"contents ({base_dir / in_file}): " + contents)
-            for func, out_file in cases.items():
-                p = base_dir / out_file
+            logging.debug(f"contents ({base_dir / prefixed_real_file}): " + contents)
+
+            for index, func_name in enumerate(["part_one", "part_two"]):
+                prefixed_out_file = f"outputs/{mod_name}/output_{index+1}"
+                p = base_dir / prefixed_out_file
                 if not p.parent.exists():
                     p.parent.mkdir()
-                with open(base_dir / out_file, "w") as out:
-                    logging.debug(f"writing {base_dir / out_file}")
+                with open(p, "w") as out:
+                    logging.debug(f"writing {p}")
+                    func = getattr(mod, func_name)
                     result = str(func(contents))
                     result_message = f"RESULT ({func.__name__}): {result}"
                     out.write(result_message)
