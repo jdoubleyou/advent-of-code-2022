@@ -7,7 +7,8 @@ def test_puzzle_09():
     verify(
         day_09,
         test={
-            "example.txt": (None, None),
+            "example.txt": (13, 1),
+            "example1.txt": (88, 36),
         },
         real=["input.txt"],
     )
